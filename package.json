@@ -6,16 +6,18 @@
         "@babel/core": "^7.18.2",
         "@babel/preset-env": "^7.18.2",
         "@babel/register": "^7.17.7",
+        "@moroo/wdio-slack-reporter": "^2.1.1",
         "@wdio/cli": "^7.20.1",
         "@wdio/cucumber-framework": "^7.20.0",
         "@wdio/local-runner": "^7.20.1",
         "@wdio/selenium-standalone-service": "^7.20.1",
         "@wdio/spec-reporter": "^7.20.0",
-        "chromedriver": "^102.0.0",
+        "chromedriver": "^104.0.0",
         "wdio-chromedriver-service": "^7.3.2"
     },
     "scripts": {
-        "wdio": "wdio run wdio.conf.js"
+        "wdio": "wdio run wdio.conf.js",
+        "repl": "wdio repl chrome"
     },
     "dependencies": {
         "axios": "^0.27.2",

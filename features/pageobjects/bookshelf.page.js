@@ -7,10 +7,6 @@ class Bookshelf extends Page{
         return 0;
     }
 
-    get customBookshelfPos(){
-        return 5;
-    }
-
     get booksInBookshelf(){
         return $$("#booksBody tr.review")
     }
@@ -28,7 +24,27 @@ class Bookshelf extends Page{
     }
 
     get customShelf(){
-        return $(`#paginatedShelfList .userShelf:nth-of-type(${this.customBookshelfPos}) .actionLinkLite`)
+        return $$(`.userShelf`)
+    }
+
+    get editButton(){
+        return $("#shelvesSection .smallText");
+    }
+
+    get bookshelfRow(){
+        return ".elementList"
+    }
+
+    get bookshelfName(){
+        return ".displayShelfNameLnk"
+    }
+
+    get bookShelDeleteButton(){
+        return "a[title='delete this shelf']"
+    }
+
+    get imDoneButton(){
+        return $(".right .gr-button")
     }
 
     async checkNewBook(bookName){
@@ -55,11 +71,38 @@ class Bookshelf extends Page{
     }
 
     async assertCustomBookShelf(){
-        const pane = await this.customShelf
-        await pane.waitForExist({timeout: 5000})
-        //await expect(pane).toHaveChildren()
-        const bookshelf = await this.pane.$("a")
-        expect(bookshelf).toHaveAttrContaining("title", browser.getData("/defaultCustomBookshelf"))
+        const custom = await this.customShelf
+        const bookshelf = await custom[custom.length-1].$("a")
+        await expect(bookshelf).toHaveAttrContaining("title", await browser.getData("/defaultCustomBookshelf"))
+    }
+
+    async clickEditButton(){
+        const button = await this.editButton
+        await button.click()
+    }
+
+    async deleteBookShelf(){
+        const rows = await $$(this.bookshelfRow)
+        rows.forEach(async (elem) => {
+            const name = await elem.$(this.bookshelfName).getText()
+            const trueName = await browser.getData("/defaultCustomBookshelf")
+            console.log(name)
+            if (name === trueName){
+                console.log("Found it")
+                await (await elem.$(this.bookShelDeleteButton)).click()
+            }
+        })
+    }
+
+    async deletionConfirmation(){
+        const rows = await $$(this.bookshelfRow)
+        const titles = await Promise.all( 
+            rows.map(async (elem) => {
+                return await elem.$(this.bookshelfName).getText()
+            }
+        ))
+        await expect.not.arrayContaining(titles)
+        await this.imDoneButton.click()
     }
 }
 

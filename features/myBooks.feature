@@ -18,3 +18,10 @@ Feature: Add to book to My Bookshelve
     And I enter a name for the bookshelf
     And I click the add button
     Then a custom shelf must be created
+
+    Scenario: As a user, I want to eliminate a custom bookshelf
+    Given I am at My Books Screen
+    When the user clicks the Edit button at the left pane
+    And I click the X button on the custom shelf table
+    And I confirm the deletion
+    Then the custom Boolshelf must be deleted

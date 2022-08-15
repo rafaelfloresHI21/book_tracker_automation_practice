@@ -47,3 +47,21 @@ When(/^I enter a name for the bookshelf$/, async () => {
 When(/^I click the add button$/, async () => {
  await Bookshelf.submitCustomBookshelf()
 });
+
+When(/^the user clicks the Edit button at the left pane$/, async () => {
+  await Bookshelf.clickEditButton()
+ });
+
+When(/^I click the X button on the custom shelf table$/, async () => {
+  await Bookshelf.deleteBookShelf()
+ });
+
+ When(/^I confirm the deletion$/, async () => {
+  await browser.pause(5000)
+  const alertStatus = await browser.isAlertOpen()
+  if (alertStatus){
+    await browser.acceptAlert()
+  }else{
+    console.log("ERROR: Alert is not visible")
+  }
+ });

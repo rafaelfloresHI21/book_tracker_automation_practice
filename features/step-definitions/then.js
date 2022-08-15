@@ -6,6 +6,7 @@ const Detailedpage = require("../pageobjects/detailed.page");
 const detailedPage = require("../pageobjects/detailed.page");
 const Bookshelf = require("../pageobjects/bookshelf.page")
 const { title } = require("../pageobjects/detailed.page");
+const { deletionConfirmation } = require("../pageobjects/bookshelf.page");
 
 Then(/^I must be redirect to the Homepage$/, async () => {
   await expect(browser).toHaveUrl("https://www.goodreads.com/");
@@ -48,5 +49,16 @@ Then(/^then I must see the book I just added$/, async () => {
 });
 
 Then(/^a custom shelf must be created$/, async () => {
-    //await Bookshelf.assertCustomBookShelf()
+    await browser.pause(10000)
+    // await browser.waitUntil(async () => {
+    //   return (await browser.isLoading()) === false
+    // }, {
+    //   interval: 2500,
+    //   timeout: 10000
+    // })
+    await Bookshelf.assertCustomBookShelf()
+});
+
+Then(/^the custom Boolshelf must be deleted$/, async () => {
+  await Bookshelf.deletionConfirmation()
 });

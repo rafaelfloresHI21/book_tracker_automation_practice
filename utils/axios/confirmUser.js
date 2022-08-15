@@ -1,21 +1,14 @@
-import General from '../General';
 
 const axios = require('axios');
 
-var logindata = JSON.stringify({
-  "email": General.email
-});
-
-
-export const confirmUser = async () => {
+export const getData = async () => {
   const config = {
-    method: 'post',
-    url: 'https://suma-wealth-api-staging.herokuapp.com/profile/confirm_by_email',
+    method: 'get',
+    url: 'https://my.api.mockaroo.com/users.json',
     headers: {
-      'Content-Type': 'application/json'
+      'X-API-Key': '464e40d0'
     },
-    data: logindata
   };
 
-  return axios(config)
-}
+  return await axios(config)
+} 

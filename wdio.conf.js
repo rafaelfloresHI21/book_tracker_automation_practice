@@ -1,5 +1,6 @@
-import confirmUser from "./utils/axios/confirmUser"
+import { getData } from "./utils/axios/confirmUser"
 import dbDriver from "./db/dbDriver"
+import SlackReporter from '@moroo/wdio-slack-reporter';
 
 exports.config = {
     //
@@ -25,7 +26,7 @@ exports.config = {
     //
     specs: [
         ["./features/login.feature", "./features/myBooks.feature"],
-        ["./features/login.feature", "./features/search.feature"]
+        // ["./features/login.feature", "./features/search.feature"]
     ],
     // Patterns to exclude.
     exclude: [
@@ -74,7 +75,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'trace',
+    logLevel: 'debug',
     //
     // Set specific log levels per logger
     // loggers:
@@ -134,7 +135,6 @@ exports.config = {
     // before running any tests.
     framework: 'cucumber',
     //
-    // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
     //
     // Delay in seconds between the spec file retry attempts
@@ -146,7 +146,34 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: [
+        'spec', 
+        // [
+        //     SlackReporter,
+        //     {
+        //       slackOptions: {
+        //         type: 'webhook',
+        //         webhook: "https://hooks.slack.com/services/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",
+        //         slackName: "WebdriverIO Test Reporter",
+        //         slackIconUrl: "https://webdriver.io/img/webdriverio.png"
+        //       },
+        //     }
+        // ]
+        // [
+        //     SlackReporter,
+        //     {
+        //       slackOptions: {
+        //         type: 'web-api',
+        //         slackBotToken: "xoxb-3225153797-3914910519360-G3IQC2j5yjNvsEMujJPppLNW",
+        //         channel: "#rf-wdio-reporter-sandbox",
+        //         // Set this option to true to attach a screenshot to the failed case.
+        //         uploadScreenshotOfFailedCase: true,
+        //         // Set this option to true if you want to add thread with details of results to notification of test results posted to Slack.
+        //         notifyDetailResultThread: true,
+        //       }
+        //     }
+        // ]
+    ],
 
 
     //
@@ -258,8 +285,13 @@ exports.config = {
      * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
      * @param {Object}                 context  Cucumber World object
      */
-    // beforeScenario: function (world, context) {
-    // },
+    beforeScenario: async function (world, context)  {
+        console.log("Contexto", world)
+        if (world.gherkinDocument.pickle.name === "As a user, I want to create a custom bookshelf"){
+            const test = await getData()
+            browser.pushData("/defaultCustomBookshelf", `${test.data[0].bookshelf}-shelf`)
+        }
+    },
     /**
      *
      * Runs before a Cucumber Step.
@@ -267,12 +299,8 @@ exports.config = {
      * @param {IPickle}            scenario scenario pickle
      * @param {Object}             context  Cucumber World object
      */
-    beforeStep: async function (step, scenario, context) {
-        // if ( step.text === 'the user must be presented with the confirmation screen'){
-        //     const temp = await confirmUser()
-        //     console.log(temp.status);
-        // }
-    },
+    // beforeStep: async function (step, scenario, context) {
+    // },
     /**
      *
      * Runs after a Cucumber Step.
@@ -284,8 +312,13 @@ exports.config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {Object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
+    afterStep: async function (step, scenario, result, context) {
+        if (result.error) {
+            const result = await browser.takeScreenshot();
+            SlackReporter.uploadFailedTestScreenshot(result);
+          }
+    }
+
     /**
      *
      * Runs after a Cucumber Scenario.
