@@ -18,6 +18,7 @@ Then(/^I must receive a (.*)$/, async message => {
 });
 
 Then(/^I must see a list of Books that match (.*)$/, async query => {
+  await Searchpage.searchByTitle()
   await Searchpage.tableResults.forEach(async (elem, index) => {
     let temp = await elem.$('span');
     await expect(temp).toHaveTextContaining(query, {ignoreCase: true});
@@ -28,13 +29,13 @@ Then(/^I must see a list of Books that match (.*)$/, async query => {
 });
 
 Then(/^I must see that there aren't results$/, async () => {
-  expect(Searchpage.NoReultsHeader).toExist;
-  expect(Searchpage.NoReultsHeader).toHaveText("No Results.");
+  await expect(Searchpage.NoReultsHeader).toExist;
+  await expect(Searchpage.NoReultsHeader).toHaveText("No Results.", {ignoreCase: true});
 });
 
 Then(/^I must be redirected to the book detailed page$/, async () => {
-  expect(Detailedpage.title).toExist;
-  expect(Detailedpage.title).toHaveText(Detailedpage.bookName);
+  await expect(Detailedpage.title).toExist;
+  await expect(Detailedpage.title).toHaveText(Detailedpage.bookName, {ignoreCase: true});
 });
 
 Then(/^that button must change to a label with a green checkmark$/, async () => {

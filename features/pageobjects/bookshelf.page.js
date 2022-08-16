@@ -73,7 +73,7 @@ class Bookshelf extends Page{
     async assertCustomBookShelf(){
         const custom = await this.customShelf
         const bookshelf = await custom[custom.length-1].$("a")
-        await expect(bookshelf).toHaveAttrContaining("title", await browser.getData("/defaultCustomBookshelf"))
+        await expect(bookshelf).toHaveAttrContaining("title", (await browser.getData("/defaultCustomBookshelf")).toLowerCase())
     }
 
     async clickEditButton(){

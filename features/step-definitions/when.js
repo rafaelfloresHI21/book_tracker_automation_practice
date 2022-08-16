@@ -8,12 +8,12 @@ const Detailedpage = require("../pageobjects/detailed.page");
 const Header = require("../pageobjects/header.page")
 const Bookshelf = require("../pageobjects/bookshelf.page")
 
-When(/^I login with (\S+) and (.+)$/, async (username, password) => {
-  await LoginPage.login(username, password);
+When(/^I login with username and password$/, async () => {
+  await LoginPage.login();
 });
 
 When(/^I try to login with (\S+) and (.+)$/, async (username, password) => {
-  await LoginPage.login(username, password);
+  await LoginPage.login();
 });
 
 When(/^I enter a search (.+)$/, async query => {

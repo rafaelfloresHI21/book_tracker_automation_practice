@@ -1,6 +1,8 @@
-import { getData } from "./utils/axios/confirmUser"
+import { getData } from "./utils/axios/getUsers"
 import dbDriver from "./db/dbDriver"
 import SlackReporter from '@moroo/wdio-slack-reporter';
+const dotenv = require('dotenv');
+dotenv.config();
 
 exports.config = {
     //
@@ -153,7 +155,7 @@ exports.config = {
         //     {
         //       slackOptions: {
         //         type: 'webhook',
-        //         webhook: "https://hooks.slack.com/services/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",
+        //         webhook: process.env.WEB_HOOK,
         //         slackName: "WebdriverIO Test Reporter",
         //         slackIconUrl: "https://webdriver.io/img/webdriverio.png"
         //       },
@@ -164,8 +166,8 @@ exports.config = {
         //     {
         //       slackOptions: {
         //         type: 'web-api',
-        //         slackBotToken: "xoxb-3225153797-3914910519360-G3IQC2j5yjNvsEMujJPppLNW",
-        //         channel: "#rf-wdio-reporter-sandbox",
+        //         slackBotToken: process.env.BOT_TOKEN,
+        //         channel: `#${process.env.REF}`,
         //         // Set this option to true to attach a screenshot to the failed case.
         //         uploadScreenshotOfFailedCase: true,
         //         // Set this option to true if you want to add thread with details of results to notification of test results posted to Slack.
@@ -286,8 +288,7 @@ exports.config = {
      * @param {Object}                 context  Cucumber World object
      */
     beforeScenario: async function (world, context)  {
-        console.log("Contexto", world)
-        if (world.gherkinDocument.pickle.name === "As a user, I want to create a custom bookshelf"){
+        if (world.pickle.name === "As a user, I want to create a custom bookshelf"){
             const test = await getData()
             browser.pushData("/defaultCustomBookshelf", `${test.data[0].bookshelf}-shelf`)
         }

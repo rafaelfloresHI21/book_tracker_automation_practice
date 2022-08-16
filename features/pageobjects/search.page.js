@@ -13,10 +13,26 @@ class Searchpage extends Page {
   }
   //body > div.content > div.mainContentContainer > div.mainContent > div.mainContentFloat > div.leftContainer > table > tbody >
 
+  get searchFilter(){
+    return $("input#search_field_title")
+  }
+
+  get searchButton(){
+    return $(".searchBox--large__button")
+  }
+
   async clickOnFirstBook() {
     await (await this.tableResults[0])
       .click();
   }
+
+  async searchByTitle(){
+    const filter = await this.searchFilter
+    await filter.click()
+    const search = await this.searchButton
+    await search.click()
+  }
+
 
   open() {
     return super.open("");

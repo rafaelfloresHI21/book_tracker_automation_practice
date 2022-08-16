@@ -1,12 +1,14 @@
 
 const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
 export const getData = async () => {
   const config = {
     method: 'get',
-    url: 'https://my.api.mockaroo.com/users.json',
+    url: process.env.MOCK_API,
     headers: {
-      'X-API-Key': '464e40d0'
+      'X-API-Key': process.env.API_KEY
     },
   };
 
