@@ -5,12 +5,24 @@ class Detailedpage extends Page {
     this.bookName = name;
   }
 
+  get welcomeNewBookpage(){
+    return $("div[role='dialog'] .Button.Button--block.Button--primary.Button--small")
+  }
+
   get wantToReadButton(){
     return $(".wtrUp.wtrLeft button")
   }
 
+  get wantToReadButtonNew(){
+    return $(".Sticky .Button.Button--block.Button--medium.Button--wtr")
+  }
+
   get wantToReadStatus(){
     return $(".wtrStatusToRead")
+  }
+
+  get wantToReadStatusNew(){
+    return $(".Sticky .PencilIcon")
   }
 
   get title() {
@@ -18,7 +30,12 @@ class Detailedpage extends Page {
   }
 
   async addBookToBookshelf(){
-    await this.wantToReadButton.click();
+    if (await browser.getData("/isNewPage")){
+      await this.welcomeNewBookpage.click()
+      await this.wantToReadButtonNew.click()
+    }else{
+      await this.wantToReadButton.click()      
+    }
   }
 }
 

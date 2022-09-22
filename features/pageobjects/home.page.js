@@ -5,6 +5,10 @@ class Homepage extends Page {
   //   this.query = value;
   // }
 
+  get newBookPage(){
+    return $("#__next")
+  }
+  
   get searchInput() {
     return $(
       "body > div.siteHeader > div > header > div.siteHeader__topLine.gr-box.gr-box--withShadow > div > div.searchBox.searchBox--navbar > form > input.searchBox__input.searchBox__input--navbar"

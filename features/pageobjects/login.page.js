@@ -21,22 +21,13 @@ class LoginPage extends Page {
     return $("input#signInSubmit");
   }
 
-  //No needed anymore
-  // get loginAlert() {
-  //   return $("#emailForm > div > div > span");
-  // }
-
-  /**
-   * a method to encapsule automation code to interact with the page
-   * e.g. to login using username and password
-   */
+  // Methods on Login page
   async login() {
     await (await this.withEmailButton.click())
     await this.inputUsername.setValue(process.env.USER_GG);
     await this.inputPassword.setValue(process.env.PASS_GG);
     await this.btnSubmit.click();
   }
-
   /**
    * overwrite specifc options to adapt it to page object
    */

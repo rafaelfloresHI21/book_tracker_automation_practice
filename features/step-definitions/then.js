@@ -5,6 +5,7 @@ const Searchpage = require("../pageobjects/search.page");
 const Detailedpage = require("../pageobjects/detailed.page");
 const detailedPage = require("../pageobjects/detailed.page");
 const Bookshelf = require("../pageobjects/bookshelf.page")
+const Homepage = require("../pageobjects/home.page")
 const { title } = require("../pageobjects/detailed.page");
 const { deletionConfirmation } = require("../pageobjects/bookshelf.page");
 
@@ -29,17 +30,21 @@ Then(/^I must see a list of Books that match (.*)$/, async query => {
 });
 
 Then(/^I must see that there aren't results$/, async () => {
-  await expect(Searchpage.NoReultsHeader).toExist;
+  await expect(Searchpage.NoReultsHeader).toExist();
   await expect(Searchpage.NoReultsHeader).toHaveText("No Results.", {ignoreCase: true});
 });
 
 Then(/^I must be redirected to the book detailed page$/, async () => {
-  await expect(Detailedpage.title).toExist;
+  await expect(Detailedpage.title).toExist();
   await expect(Detailedpage.title).toHaveText(Detailedpage.bookName, {ignoreCase: true});
 });
 
 Then(/^that button must change to a label with a green checkmark$/, async () => {
-  await expect(await detailedPage.wantToReadStatus).toExisting
+  if (await browser.getData("/isNewPage")){
+    await (await detailedPage.wantToReadStatusNew).waitForDisplayed({ timeout: 3000 })
+  }else{
+    await (await detailedPage.wantToReadStatus).waitForDisplayed({ timeout: 3000 })
+  }
 });
 
 Then(/^then I must see the book I just added$/, async () => {

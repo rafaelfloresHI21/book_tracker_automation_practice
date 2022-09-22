@@ -85,7 +85,7 @@ class Bookshelf extends Page{
         const rows = await $$(this.bookshelfRow)
         rows.forEach(async (elem) => {
             const name = await elem.$(this.bookshelfName).getText()
-            const trueName = await browser.getData("/defaultCustomBookshelf")
+            const trueName = (await browser.getData("/defaultCustomBookshelf")).toLowerCase()
             console.log(name)
             if (name === trueName){
                 console.log("Found it")

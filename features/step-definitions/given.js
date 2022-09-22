@@ -16,7 +16,12 @@ Given(/^I am on the (\w+) page$/, async page => {
 
 Given(/^I am at a Detailed Screen of a book$/, async () => {
   //Load default book page
-  await browser.url(utils.defaultBook.url)
+  await browser.url(await browser.getData("/defaultBook/url"))
+  if (await (await Homepage.newBookPage).isExisting()){
+    await browser.pushData("/isNewPage", true)
+  }else{
+    await browser.pushData("/isNewPage", false)
+  }
 });
 
 Given(/^I am at My Books Screen$/, async () => {
