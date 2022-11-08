@@ -22,10 +22,10 @@ class LoginPage extends Page {
   }
 
   // Methods on Login page
-  async login() {
+  async login(defaultUser, defaultPass) {
     await (await this.withEmailButton.click())
-    await this.inputUsername.setValue(process.env.USER_GG);
-    await this.inputPassword.setValue(process.env.PASS_GG);
+    await this.inputUsername.setValue(defaultUser || process.env.USER_GG);
+    await this.inputPassword.setValue(defaultPass || process.env.PASS_GG);
     await this.btnSubmit.click();
   }
   /**

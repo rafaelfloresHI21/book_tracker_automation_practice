@@ -28,7 +28,7 @@ exports.config = {
     //
     specs: [
         ["./features/login.feature", "./features/myBooks.feature"],
-        // ["./features/login.feature", "./features/search.feature"]
+        ["./features/login.feature", "./features/search.feature"]
     ],
     // Patterns to exclude.
     exclude: [
@@ -117,8 +117,13 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
+    user: process.env.BROWSERSTACK_USERNAME,
+    key: process.env.BROWSERSTACK_ACCESS_KEY,
     services: [
-        "chromedriver"
+        // "chromedriver",
+        ['browserstack', {
+            browserstackLocal: false
+        }]
         // ['selenium-standalone', { 
         //     drivers: { firefox: '0.29.1', chrome: true, chromiumedge: 'latest' },
         //     logPath: './',
@@ -161,20 +166,20 @@ exports.config = {
         //       },
         //     }
         // ]
-        // [
-        //     SlackReporter,
-        //     {
-        //       slackOptions: {
-        //         type: 'web-api',
-        //         slackBotToken: process.env.BOT_TOKEN,
-        //         channel: `#${process.env.REF}`,
-        //         // Set this option to true to attach a screenshot to the failed case.
-        //         uploadScreenshotOfFailedCase: true,
-        //         // Set this option to true if you want to add thread with details of results to notification of test results posted to Slack.
-        //         notifyDetailResultThread: true,
-        //       }
-        //     }
-        // ]
+        [
+            SlackReporter,
+            {
+              slackOptions: {
+                type: 'web-api',
+                slackBotToken: process.env.BOT_TOKEN,
+                channel: `#${process.env.REF}`,
+                // Set this option to true to attach a screenshot to the failed case.
+                uploadScreenshotOfFailedCase: true,
+                // Set this option to true if you want to add thread with details of results to notification of test results posted to Slack.
+                notifyDetailResultThread: true,
+              }
+            }
+        ]
     ],
 
 

@@ -13,7 +13,7 @@ When(/^I login with username and password$/, async () => {
 });
 
 When(/^I try to login with (\S+) and (.+)$/, async (username, password) => {
-  await LoginPage.login();
+  await LoginPage.login(username, password);
 });
 
 When(/^I enter a search (.+)$/, async query => {

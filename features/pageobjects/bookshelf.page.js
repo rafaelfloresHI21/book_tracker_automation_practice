@@ -88,7 +88,6 @@ class Bookshelf extends Page{
             const trueName = (await browser.getData("/defaultCustomBookshelf")).toLowerCase()
             console.log(name)
             if (name === trueName){
-                console.log("Found it")
                 await (await elem.$(this.bookShelDeleteButton)).click()
             }
         })
