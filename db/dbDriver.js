@@ -11,7 +11,7 @@ class dbDriver  {
         } catch (error) {
             console.log(error)
         }
-        console.log(this.db.data)
+        //console.log(this.db.data)
         if (!Object.keys(this.db.data).length){
             console.log("No Cargó el JSON")
             this.db.push("/", General)
