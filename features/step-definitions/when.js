@@ -62,6 +62,6 @@ When(/^I click the X button on the custom shelf table$/, async () => {
   if (alertStatus){
     await browser.acceptAlert()
   }else{
-    console.log("ERROR: Alert is not visible")
+    console.log("ERROR: Alert is not visible in context")
   }
  });
